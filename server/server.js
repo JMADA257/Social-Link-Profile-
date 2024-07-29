@@ -1,30 +1,13 @@
-require("dotenv").config();
 const express = require("express");
-const { ApolloServer } = require("apollo-server-express");
-const path = require("path"); 
-
-const PORT = process.env.PORT || 5173;
 const app = express();
 
-const server = new ApolloServer({
+const PORT = process.env.PORT || 5173;
+
+app.get("/api", (req, res) => {
+  res.json({ users: ["userOne", "userTwo", "userThree", "userFour"] });
 });
 
-async function startApolloServer() {
-  await server.start();
-
-  app.use(express.urlencoded({ extended: false }));
-  app.use(express.json());
-
-  app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send("Internal Server Error");
-  });
-
-  db.once("open", () => {
-    app.listen(PORT, () => {
-      console.log(`API server running on port http://localhost:${PORT}`);
-    });
-  });
-}
-
-startApolloServer();
+app.listen(PORT, () => {
+  console.log(`Server started on port http://localhost:${PORT}/api`);
+  console.log(`Front end started on port http://localhost:${PORT}`);
+});
